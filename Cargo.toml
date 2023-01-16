@@ -1,0 +1,30 @@
+[package]
+name = "RustXYDual"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "py_xydual"
+crate-type = ["cdylib"]
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+
+[dependencies]
+rayon = ">=1.6"
+num-traits = ">=0.2"
+rand = ">=0.8"
+
+[dependencies.pyo3]
+version = ">=0.17"
+features = ["extension-module"]
+
+[dependencies.ndarray]
+version = ">=0.15"
+features = ["rayon"]
+
+[dependencies.numpy]
+version = ">=0.17"

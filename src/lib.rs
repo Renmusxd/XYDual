@@ -13,11 +13,18 @@ struct PyLattice {
 #[pymethods]
 impl PyLattice {
     #[new]
-    fn new(lx: usize, ly: usize, pots: Vec<f64>, experiments: Option<usize>) -> Self {
+    fn new(
+        lx: usize,
+        ly: usize,
+        pots: Vec<f64>,
+        experiments: Option<usize>,
+        boundary: Option<(i32, i32)>,
+    ) -> Self {
         let experiments = experiments.unwrap_or(1);
+        let boundary = boundary.unwrap_or((0, 0));
         Self {
             lat: (0..experiments)
-                .map(|_| Lattice::new(lx, ly, pots.clone()))
+                .map(|_| Lattice::new(lx, ly, pots.clone(), boundary))
                 .collect(),
         }
     }

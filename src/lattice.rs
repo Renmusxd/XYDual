@@ -50,13 +50,18 @@ impl Default for SubLatticeIndex {
 }
 
 impl Lattice {
-    pub fn new<V: Into<Array1<f64>>>(x: usize, y: usize, potential: V) -> Self {
+    pub fn new<V: Into<Array1<f64>>>(
+        x: usize,
+        y: usize,
+        potential: V,
+        boundary: (i32, i32),
+    ) -> Self {
         assert_eq!(x % 2, 0);
         assert_eq!(y % 2, 0);
         Self {
             a_lattice: Array2::zeros((x, y / 2)),
             b_lattice: Array2::zeros((x, y / 2)),
-            boundaries: (0, 0),
+            boundaries: boundary,
             potential: potential.into(),
             mc_trials: [-1, 0, 1],
         }
@@ -607,10 +612,10 @@ mod tests {
     #[test]
     fn it_works() {
         let L = 16;
-        let mut result = Lattice::new(L, L, vec![0.0, 4.0, 1000.0]);
+        let mut result = Lattice::new(L, L, vec![0.0, 4.0, 1000.0], (0, 0));
         result.boundaries = (-1, 0);
         for _ in 0..100 {
-            result.update();
+            result.old_update();
         }
 
         for j in 0..L / 2 {
